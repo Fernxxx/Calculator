@@ -1,4 +1,6 @@
+<?xml version="1.0"?>
 <launch>
-  <node pkg="mypkg" type="mynode" name="mynode" />
-  <test test-name="test_mynode" pkg="mypkg" type="test_mynode" />
+  <node pkg="Calculator" name="add_two_ints_server"  type="add_two_ints_server" />
+  <test pkg="Calculator" test-name="test_add_two_ints" type="test_add_two_ints" />
 </launch>
+

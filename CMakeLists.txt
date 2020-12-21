@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(Calculator)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -108,7 +108,7 @@ add_service_files(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES Calculator
-#  CATKIN_DEPENDS roscpp rospy std_msgs
+ CATKIN_DEPENDS roscpp rospy std_msgs message_runtime
 #  DEPENDS system_lib
 )
 
@@ -218,14 +218,28 @@ add_dependencies(listener Calculator_generate_messages_cpp)
 
 add_executable(add_two_ints_server src/add_two_ints_server.cpp)
 target_link_libraries(add_two_ints_server ${catkin_LIBRARIES})
-add_dependencies(add_two_ints_server beginner_tutorials_gencpp)
+add_dependencies(add_two_ints_server Calculator_gencpp)
 
 add_executable(add_two_ints_client src/add_two_ints_client.cpp)
 target_link_libraries(add_two_ints_client ${catkin_LIBRARIES})
-add_dependencies(add_two_ints_client beginner_tutorials_gencpp)
+add_dependencies(add_two_ints_client Calculator_gencpp)
 
-catkin_add_gtest(add_two_ints_test test/test_add_two_ints.cpp)
 if(CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)
-  add_rostest(test/test_add_two_ints.cpp)
+  add_rostest_gtest(
+  test_add_two_ints 
+  test/test_add_two_ints.launch 
+  test/test_add_two_ints.cpp
+  )
+  target_link_libraries(
+  test_add_two_ints  
+  ${catkin_LIBRARIES}
+  )
+  add_dependencies(
+  test_add_two_ints
+  add_two_ints_server
+  Calculator_generate_messages_cpp
+  ${catkin_EXPORTED_TARGETS}
+  )
 endif()
+
