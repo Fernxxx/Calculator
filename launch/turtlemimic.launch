@@ -13,4 +13,8 @@
        <remap from="output" to="turtlesim2/turtle1"/>
      </node>
    
+<!--group ns="turtlesim2"-->
+
    </launch>
+
+
